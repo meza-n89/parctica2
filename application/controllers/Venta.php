@@ -51,9 +51,9 @@ public function insert_v(){
 		echo $this->VM->insert_venta(
 		$this->input->post('cliente'),
 		$this->input->post('fecha'),
-		$this->input->post('producto'),
 		$this->input->post('total'),
-		$this->input->post('cantidad')
+		$this->input->post('cantidad'),
+		$this->input->post('producto')
 		);
 		
 

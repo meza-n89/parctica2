@@ -44,7 +44,7 @@ public function get_total($id){
 		}
 }
 
-public function insert_venta($cliente,$fecha,$producto,$total,$totalp){
+public function insert_venta($cliente,$fecha,$total,$totalp,$producto){
 	$this->load->database();
 	$this->db->trans_begin();
 		$datos = array(	
@@ -60,7 +60,7 @@ public function insert_venta($cliente,$fecha,$producto,$total,$totalp){
 		 for($i=0;$i<$totalp;$i++){
 		 	$this->db->query('insert into tab_prodventa (id_producto,id_venta) VALUES ('.$producto.','.$gaver2.')');
 		}
-		$this->db->query("UPDATE tab_producto SET existencias_producto=(existencias_producto-".$totalp.") WHERE id_producto=".$producto);
+		//$this->db->query("UPDATE tab_producto SET existencias_producto=(existencias_producto-".$totalp.") WHERE id_producto=".$producto);
 		if($this->db->trans_status()===FALSE){
 			$this->db->trans_rollback();
 			return 0;

@@ -33,7 +33,7 @@
   <div class="form-group">
     <h1 for="exampleFormControlSelect1">Registro venta</h1>
     <label>Seleccionar cliente</label>
-    <select name="cliente" class="form-control" id="cliente">
+    <select name="cliente" class="form-control" id="cliente" required="">
  
     </select>
   </div>
@@ -70,7 +70,7 @@
 <div class="form-group" >
 
     <label for="Total">Total</label>
-    <input type="text" name="total" class="form-control" id="total" placeholder="total" disabled>
+    <input type="text" name="total" class="form-control" id="total" placeholder="total" >
   </div>
 
   <div class="row">
@@ -81,7 +81,7 @@
       <div class="col-md-6">
         <input type="reset" class="btn btn-success" id="limpiar" value="Limpiar" >
       </div>
-    <a href="<?php echo site_url();?>/Producto/">Inventario</a>
+    
   </div>
 </form>
 </div>
@@ -182,7 +182,7 @@ function insert_venta(){
     data: $('#form').serialize(),
     success: function(data)
     {
-      if(data!=0)
+      if(!(data=0))
       {
         alert('Datos ingresados correctamente');
         location.href='';

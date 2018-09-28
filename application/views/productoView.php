@@ -12,6 +12,10 @@
 <link rel="stylesheet" href="<?php echo base_url();?>/css/matrix-media.css" />
 <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -21,6 +25,12 @@
           <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
             <h5>Data table</h5>
           </div>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+           Nuevo Producto
+          </button>
+
+
+
           <div class="widget-content nopadding">
             <table id="example" class="table table-bordered data-table">
               <thead>
@@ -42,6 +52,47 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3>Nuevo producto</h3>
+        <form id="productos" action="" method="post">
+        <input type="text"  class="form-control" name="producto" placeholder="producto">
+        <select name="tipo_prod" id="tipo_prod" class="form-control">
+          
+        </select>
+        <input type="textarea" name="descripcion" placeholder="descripcion" class="form-control">
+        <select name="Proveedor_prod" id="proveedor" class="form-control">
+          
+        </select>
+        <input class="form-control" type="text" name="stock" placeholder="stock minimo">
+        <input class="form-control" type="text" name="existencias" placeholder="existencias producto">
+        <select name="estado_producto" class="form-control">
+          <option value="1">activo</option>
+          <option value="0">inactivo</option>
+        </select>
+        <input class="form-control" type="date" name="fecha_cad" placeholder="fecha de caducidad">
+        <input class="form-control" type="text" name="precio_u" placeholder="precio unitario">
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" onclick="insertar_producto()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!--Footer-part-->
 >
 <!--end-Footer-part-->
@@ -64,7 +115,10 @@
 </html>
 <script type="text/javascript">
   $(document).ready(function() {
-    $('#example').DataTable( {
+    llenartipo();
+    llenar_proveedor();
+    insertar_producto();
+    var tabla=$('#example').DataTable( {
         "ajax": {
             "url": "<?php echo site_url();?>/Producto/llenar_tabla",
             "dataSrc": ""
@@ -90,7 +144,50 @@
               
           ]
     } );
+
+tabla.ajax.url("<?php echo site_url();?>/Producto/llenar_tabla").load();
+
 } );
 
+function llenartipo(){
+    $.ajax({
+      type:"post",
+      url:"<?php echo site_url();?>/Producto/select_tipo_prod",
+      success:function(data){
+        $('#tipo_prod').html('');
+        $('#tipo_prod').html(data);
+      }
+  });
+}
+
+function llenar_proveedor()
+{
+  $.ajax({
+    type:"post",
+    url:"<?php echo site_url();?>/Producto/select_proveedor",
+    success:function(data){
+      $('#proveedor').html('');
+      $('#proveedor').html(data);
+    }
+  });
+}
+
+function insertar_producto()
+{
+  $.ajax({
+    type:"post",
+    url:"<?php echo site_url();?>/Producto/insert_prod",
+    data:$('#productos').serialize(),
+    success:function(data){
+      if(!data)
+      {
+        console.log("error al insertar datos");
+      }else{
+        alert("datos insertados correctamente");
+        //location.reload();
+      }
+    }
+  });
+}
 
 </script>
